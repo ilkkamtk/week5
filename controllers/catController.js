@@ -15,7 +15,7 @@ const cat_create_post = (req, res) => {
 const cat_get = async (req, res) => {
   const params = [req.params.id];
   const cat = await catModel.getCat(params);
-  await res.json(cat);
+  await res.json(cat[0]);
 };
 
 
