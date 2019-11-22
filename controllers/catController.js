@@ -8,12 +8,16 @@ const cat_list_get = async (req, res) => {
   await res.json(cats);
 };
 
-const cat_create_post = (req, res) => {
+const cat_create_post = async (req, res) => {
   const params = [
-      name....
-      .....
-      req.file.filename
-  ]
+    req.body.name,
+    req.body.age,
+    req.body.weight,
+    req.body.owner,
+    req.file.filename,
+  ];
+  const response = await catModel.addCat(params);
+  await res.json(response);
 };
 
 const cat_get = async (req, res) => {
@@ -21,7 +25,6 @@ const cat_get = async (req, res) => {
   const cat = await catModel.getCat(params);
   await res.json(cat[0]);
 };
-
 
 module.exports = {
   cat_list_get,
