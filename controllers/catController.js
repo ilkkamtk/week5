@@ -9,7 +9,11 @@ const cat_list_get = async (req, res) => {
 };
 
 const cat_create_post = (req, res) => {
-  res.send('With this endpoint you can add cats.');
+  const params = [
+      name....
+      .....
+      req.file.filename
+  ]
 };
 
 const cat_get = async (req, res) => {

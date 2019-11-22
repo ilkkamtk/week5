@@ -12,9 +12,15 @@ const user_get = async (req, res) => {
   await res.json(user[0]);
 };
 
-
-const user_create_post = (req, res) => {
-  res.send('With this endpoint you can add cats.');
+const user_create_post = async (req, res) => {
+  const params = [
+    req.body.name,
+    req.body.email,
+    req.body.passwd,
+  ];
+  const response = await userModel.addUser(params);
+  const user = await userModel.getUser([response.insertId]);
+  await res.json(user);
 };
 
 module.exports = {
