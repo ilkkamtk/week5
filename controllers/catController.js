@@ -1,6 +1,7 @@
 'use strict';
 const catModel = require('../models/catModel');
 const resize = require('../utils/resize');
+const imageMeta = require('../utils/imageMeta');
 
 // const cats = catModel.cats;
 
@@ -10,22 +11,34 @@ const cat_list_get = async (req, res) => {
 };
 
 const cat_create_post = async (req, res) => {
-  // create thumbnail
-  await resize.makeThumbnail(
-      req.file.path,
-      'thumbnails/' + req.file.filename,
-      {width: 160, height: 160},
-  );
+  try {
+    // create thumbnail
+    await resize.makeThumbnail(
+        req.file.path,
+        'thumbnails/' + req.file.filename,
+        {width: 160, height: 160},
+    );
 
-  const params = [
-    req.body.name,
-    req.body.age,
-    req.body.weight,
-    req.body.owner,
-    req.file.filename,
-  ];
-  const response = await catModel.addCat(params);
-  await res.json(response);
+    // get coordinates
+    const coords = await imageMeta.getCoordinates(req.file.path);
+    console.log('coords', coords);
+
+    const params = [
+      req.body.name,
+      req.body.age,
+      req.body.weight,
+      req.body.owner,
+      req.file.filename,
+      coords,
+    ];
+
+    const response = await catModel.addCat(params);
+    await res.json(response);
+    // await res.json(params);
+  } catch (e) {
+    console.log('exif error', e);
+    res.status(400).json({message: 'error'});
+  }
 };
 
 const cat_get = async (req, res) => {
