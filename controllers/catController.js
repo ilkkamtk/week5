@@ -1,5 +1,6 @@
 'use strict';
 const catModel = require('../models/catModel');
+const resize = require('../utils/resize');
 
 // const cats = catModel.cats;
 
@@ -9,6 +10,13 @@ const cat_list_get = async (req, res) => {
 };
 
 const cat_create_post = async (req, res) => {
+  // create thumbnail
+  await resize.makeThumbnail(
+      req.file.path,
+      'thumbnails/' + req.file.filename,
+      {width: 160, height: 160},
+  );
+
   const params = [
     req.body.name,
     req.body.age,
